@@ -13,20 +13,24 @@
 %  Author:      Mudit Garg
 %  Date:        05/01/2020
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;clc;
+points=readPoints();
 
-points=readPoints('points3D.txt');
+iter=100;
+threshold=0.5;
+min_points=3;
+near_by=100;
+%[p_best,n_best,ro_best,X_best,Y_best,Z_best,error_best]=ransac_cust(points,min_points,iter,threshold,near_by);
 
-iter=3000;
-threshold=0.0000001;
-ransac_cust(points,iter,threshold);
+[model, inlierIdx]= RANSAC(points, fitFcn, distFcn, sampleSize, maxDistance) ;
 
 
 % display the 3d points 
 figure(1); clf; 
-plot3(points(1,:),points(2,:)',points(3,:)','ro','LineWidth',2);
-% hold on
-% plot3(inlier(1,:)',inlier(2,:)',ilier(3,:)','b*','LineWidth',2);
-% hold off
+% plot3(points(:,1),points(:,2),points(:,3),'ro','LineWidth',2);
+%  hold on
+ plot3(X_best,Y_best,Z_best,'b*','LineWidth',2);
+ hold off
 drawnow
 rotate3d on
 axis equal
