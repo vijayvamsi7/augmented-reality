@@ -17,7 +17,7 @@ for i = 1:iter
    ids = find(distances < d);
    if size(ids,1) > in_count
        
-       in_count = size(ids,1)
+       in_count = size(ids,1);
        in_points = points(ids,:);
    elseif size(ids,1) == in_count && std(distances)<stdd
        stdd = std(distances);
