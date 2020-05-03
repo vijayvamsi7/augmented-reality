@@ -1,86 +1,20 @@
-%%%%%%%%%%%%% main.m file %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Purpose:
-%
-% Input Variables:
-%
-% Returned Results:
-%
-% Processing Flow:
-%
-%
-% The following functions are called:  
-%
-%  Author:      Mudit Garg
-%  Date:        05/01/2020
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear;clc;
-points=readPoints();
+clear; clc;
+data = readPoints('points3D.txt')';
+custom_box = [1 1 0; 1 -1 0; -1 -1 0; -1 1 0; 1 1 2; 1 -1 2; -1 -1 2; -1 1 2];
 
-% iter=1000;
-% threshold=1;
-% min_points=3;
-% near_by=10;
-% [p_best,n_best,ro_best,X_best,Y_best,Z_best,error_best]=ransac_cust(points,min_points,iter,threshold,near_by);
-% 
-% %[model, inlierIdx]= RANSAC(points, fitFcn, distFcn, sampleSize, maxDistance) ;
-% 
-% 
-% % display the 3d points 
-% figure(1); clf; 
-% % plot3(points(:,1),points(:,2),points(:,3),'ro','LineWidth',2); 
-% % hold on
-% plot3(p_best(1,:),p_best(2,:),p_best(3,:),'b*','LineWidth',2);
-% hold off
-% drawnow
-% rotate3d on
-% axis equal
+% Ransac routine
+[p_best, n_best, ro_best, X_best, Y_best, Z_best, error_best] = ransac_cus(data, 400, 10, 2, 40);
 
-inliers=matfile('in_points.mat').in_points;
-camera_coord=getCameraCoordinates(inliers,points');
-box = [1 1 1; 1 1 -1;1 -1 1;  1 -1 -1; -1 1 1; -1 1 -1 ; -1 -1 1;  -1 -1 -1];
-% 
-% figure(1);clf;
-% plot3(inliers(:,1),inliers(:,2),inliers(:,3),'b*','LineWidth',2);
-% hold on
-% plot3(points(:,1),points(:,2),points(:,3),'ro','LineWidth',2);
-% hold on
-% plot3(box(:,1),box(:,2),box(:,3),'o');
-% hold off
-% drawnow
-% rotate3d on
-% axis equal
+% Get rotation matrix and translation created box
+rot_mat = generate_rotation(n_best(1), n_best(2), n_best(3));
+translated_custom_box = translation(custom_box, rot_mat, ro_best, n_best(3));
 
-x=inliers(:,1);
-y=inliers(:,2);
-z=inliers(:,3);
-DM = [x, y, ones(size(z))];                             % Design Matrix
-B = DM\z;                                               % Estimate Parameters
-[X,Y] = meshgrid(linspace(min(x),max(x),50), linspace(min(y),max(y),50));
-Z = B(1)*X + B(2)*Y + B(3)*ones(size(X));
-figure(1)
-plot3(inliers(:,1),inliers(:,2),inliers(:,3),'.')
-hold on
-meshc(X, Y, Z)
-hold off
-grid on
-xlabel('x(mm)'); ylabel('y(mm)'); zlabel('z(mm)');
-grid on
+% Plot the box on the axis
+%plot_3d_polygon(X_best, Y_best, Z_best, translated_custom_box);
 
-hold on;
-plot3(points(:,1),points(:,2),points(:,3),'.')
-grid on
-alpha(0.3)
-
-
-[intrinsic_map,extrinsic_map,img_camera_id]=getCameraParameters();
-
-keySet=intrinsic_map.keys();
-
-for i=1:length(keySet)
-    camera=keySet(i);
-    k=intrinsic_map(camera);
-    rot=extrinsic_map(camera);
-    img_coor=getImageCoordinates(k,rot,camera_coord);
+for i = 1:5
+    subplot(1,5,i),plot_and_project(i,translated_custom_box);
+    hold on;
 end
 
 
