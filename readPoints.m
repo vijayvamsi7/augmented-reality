@@ -16,7 +16,7 @@
 
 
 function [points]=readPoints()
-fileID = fopen('points3D.txt','r');
+fileID = fopen('points3D_1.txt','r');
 
 output=textscan(fileID,'%f %f %f %f %*[^\n]','Delimiter',' ','CommentStyle','#');
 
