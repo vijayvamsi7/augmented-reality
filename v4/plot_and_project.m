@@ -1,5 +1,3 @@
-% [A, R_t]=parameters('frame28.jpg');
-
 function plot_and_project(img_id,translated_custom_box)
 [ik,iv,ek,ev,ic_map]=getCameraParameters();
 
