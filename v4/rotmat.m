@@ -1,19 +1,9 @@
-function [R,d,c] = rotmat(norm_vector,ro_best)
-    
-    a = norm_vector(1);
-    b = norm_vector(2);
-    c = norm_vector(3);
-    d = ro_best;
+function rot_mat = rotmat(u, v, w)
 
-    %TRANSLATE TO Z-d/c 
-
-    sq = sqrt(a^2 + b^2 + c^2);
-
-    ct = c/sq;
-    st = sqrt(a^2 + b^2)/sq;
-    u1 = b/sq;
-    u2 = -a/sq;
-
+    u1 = v/sqrt(u^2 + v^2 + w^2);
+    u2 = -u/sqrt(u^2 + v^2 + w^2);
+    ct = w/sqrt(u^2 + v^2 + w^2);
+    st = sqrt(u^2 + v^2)/sqrt(u^2 + v^2 + w^2);
 
     R1 = ct + u1^2*(1-ct);
     R2 = u1*u2*(1-ct);
@@ -25,6 +15,5 @@ function [R,d,c] = rotmat(norm_vector,ro_best)
     R8 = u1*st;
     R9 = ct;
 
-    R = [R1 R2 R3; R4 R5 R6; R7 R8 R9];
-
+    rot_mat = [R1 R2 R3; R4 R5 R6; R7 R8 R9];
 end

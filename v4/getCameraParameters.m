@@ -61,6 +61,4 @@ function [intrinsic_map_keys,intrinsic_map_values,extrinsic_map_keys,extrinsic_m
     imgId
     cameraId
     image_camera_map=containers.Map(imgId,cameraId);
-
-
 return
