@@ -30,7 +30,7 @@ for i = 1:iter
 end
 
 
-in_points
+%in_points
 
 theta = estimate_plane(in_points)';
 
