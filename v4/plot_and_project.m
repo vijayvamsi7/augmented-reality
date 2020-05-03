@@ -32,7 +32,7 @@ for i = 1:length(translated_custom_box)
 end
 proj_pixel_cord = proj_pixel_cord(:,1:2);
 
-tt = imread(strcat('C:\Users\Vijay Vamsi\Desktop\cv_project\augmented-reality\',int2str(c1_id),'table.jpeg'));
+tt = imread(strcat('C:\Users\Vijay Vamsi\Desktop\cv_project\augmented-reality\v4\original_images\ori_img',int2str(c1_id),'.jpeg'));
 
 figure(1)
 imshow(tt)
