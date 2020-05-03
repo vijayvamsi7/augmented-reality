@@ -72,4 +72,15 @@ grid on
 alpha(0.3)
 
 
+[intrinsic_map,extrinsic_map,img_camera_id]=getCameraParameters();
+
+keySet=intrinsic_map.keys();
+
+for i=1:length(keySet)
+    camera=keySet(i);
+    k=intrinsic_map(camera);
+    rot=extrinsic_map(camera);
+    img_coor=getImageCoordinates(k,rot,camera_coord);
+end
+
 
