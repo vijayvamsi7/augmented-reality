@@ -1,10 +1,13 @@
-function [intrinsic_map_keys,intrinsic_map_values,extrinsic_map_values,extrinsic_map_keys,image_camera_map]=getCameraParameters()
+function [intrinsic_map_keys,intrinsic_map_values,extrinsic_map_keys,extrinsic_map_values,image_camera_map]=getCameraParameters()
 
     fileID = fopen('cameras.txt','r');
-
+    %CAMERA_ID, MODEL, WIDTH, HEIGHT, PARAMS[focal length,px,py,something]
     output=textscan(fileID,'%d %s %f %f %f %f %f %f','Delimiter',' ','CommentStyle','#');
+    
     fileID2 = fopen('images.txt','r');
+    %IMAGE_ID, QW, QX, QY, QZ, TX, TY, TZ, CAMERA_ID, NAME
     img=textscan(fileID2,'%d %f %f %f %f %f %f %f %d %s %*[^\n]','Delimiter',' ','CommentStyle','#');
+    
     [m,n]=size(output{1});
     imgId=zeros(1,m);
     cameraId=zeros(1,m);

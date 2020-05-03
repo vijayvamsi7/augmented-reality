@@ -1,0 +1,19 @@
+%yoyo11 = [2 2 0; 2 -2 0; -2 -2 0; -2 2 0; 2 2 4; 2 -2 4; -2 -2 4; -2 2 4];
+mesh(X_best,Y_best,Z_best);colormap([2 1 1]);
+hold on
+plot_rect_plane(yoyo11(1,:),yoyo11(2,:),yoyo11(3,:),yoyo11(4,:))
+hold on;
+plot_rect_plane(yoyo11(5,:),yoyo11(6,:),yoyo11(7,:),yoyo11(8,:))
+hold on;
+plot_rect_plane(yoyo11(1,:),yoyo11(2,:),yoyo11(6,:),yoyo11(5,:))
+hold on;
+plot_rect_plane(yoyo11(2,:),yoyo11(3,:),yoyo11(7,:),yoyo11(6,:))
+hold on;
+plot_rect_plane(yoyo11(3,:),yoyo11(4,:),yoyo11(8,:),yoyo11(7,:))
+hold on;
+plot_rect_plane(yoyo11(4,:),yoyo11(1,:),yoyo11(5,:),yoyo11(8,:))
+hold on;
+
+xlabel('X') 
+ylabel('Y')
+zlabel('Z')
