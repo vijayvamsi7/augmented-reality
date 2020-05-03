@@ -38,17 +38,38 @@ points=readPoints();
 inliers=matfile('in_points.mat').in_points;
 camera_coord=getCameraCoordinates(inliers,points');
 box = [1 1 1; 1 1 -1;1 -1 1;  1 -1 -1; -1 1 1; -1 1 -1 ; -1 -1 1;  -1 -1 -1];
+% 
+% figure(1);clf;
+% plot3(inliers(:,1),inliers(:,2),inliers(:,3),'b*','LineWidth',2);
+% hold on
+% plot3(points(:,1),points(:,2),points(:,3),'ro','LineWidth',2);
+% hold on
+% plot3(box(:,1),box(:,2),box(:,3),'o');
+% hold off
+% drawnow
+% rotate3d on
+% axis equal
 
-figure(1);clf;
-plot3(inliers(:,1),inliers(:,2),inliers(:,3),'b*','LineWidth',2);
+x=inliers(:,1);
+y=inliers(:,2);
+z=inliers(:,3);
+DM = [x, y, ones(size(z))];                             % Design Matrix
+B = DM\z;                                               % Estimate Parameters
+[X,Y] = meshgrid(linspace(min(x),max(x),50), linspace(min(y),max(y),50));
+Z = B(1)*X + B(2)*Y + B(3)*ones(size(X));
+figure(1)
+plot3(inliers(:,1),inliers(:,2),inliers(:,3),'.')
 hold on
-plot3(points(:,1),points(:,2),points(:,3),'ro','LineWidth',2);
-hold on
-plot3(box(:,1),box(:,2),box(:,3),'o');
+meshc(X, Y, Z)
 hold off
-drawnow
-rotate3d on
-axis equal
+grid on
+xlabel('x(mm)'); ylabel('y(mm)'); zlabel('z(mm)');
+grid on
+
+hold on;
+plot3(points(:,1),points(:,2),points(:,3),'.')
+grid on
+alpha(0.3)
 
 
 

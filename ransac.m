@@ -4,8 +4,8 @@ points = readPoints();
 in_count = 0;
 in_points = [];
 stdd = Inf;
-iter = 3000;
-s = 7;
+iter = 2000;
+s = 3;
 d = 4;
 
 for i = 1:iter
