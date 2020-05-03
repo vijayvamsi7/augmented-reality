@@ -1,4 +1,4 @@
-function [n_est ro_est X Y Z]=LSE(p)
+function [n_est ro_est X Y Z]=least_square_error(p)
 %© Tim Zaman 2010, input: p (points)
 % Works like [n_est ro_est X Y Z]=LSE(p)
 % p should be a Mx3; [points x [X Y Z]]
