@@ -17,7 +17,7 @@
 function [camera_coor]=getCameraCoordinates(plane,worldPoints)
 
 c=[0 0 0];
-%c= mid point of plane
+%c= mid point of pslane
 for i=1:length(plane)
     c(1)=c(1)+plane(i,1);
     c(2)=c(2)+plane(i,2);
