@@ -22,8 +22,8 @@ output=textscan(fileID,'%d %s %f %f %f %f %f %f','Delimiter',' ','CommentStyle',
 fileID2 = fopen('images.txt','r');
 img=textscan(fileID2,'%d %f %f %f %f %f %f %f %d %s %*[^\n]','Delimiter',' ','CommentStyle','#');
 [m,n]=size(output{1});
-imgId=zeros(m,1);
-cameraId=zeros(m,1);
+imgId=zeros(1,m);
+cameraId=zeros(1,m);
 intrinsic_map_values=zeros(3,3,m);
 intrinsic_map_keys=zeros(m,1);
 
@@ -59,7 +59,7 @@ end
 
 %intrinsic_map=containers.Map(intrinsic_map_keys,intrinsic_map_values);
 %extrinsic_map=containers.Map(extrinsic_map_keys,extrinsic_map_values);
-image_camera_map=containers.Map(imgId,cameraId);
+image_camera_map=containers.Map(cameraId,imgId);
 
 
 return
