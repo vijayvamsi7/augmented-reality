@@ -1,12 +1,7 @@
 % [A, R_t]=parameters('frame28.jpg');
 
-function plot_and_project(imageID,translated_custom_box)
+function plot_and_project(img_id,translated_custom_box)
 [ik,iv,ek,ev,ic_map]=getCameraParameters();
-img_id = imageID;
-% for i = 1:5
-%     subplot(1,5,i),plot_and_project(i,translated_custom_box);
-%     hold on;
-% end
 
 plane_ids = [1 2 3 4;
     5 6 7 8;
@@ -16,10 +11,7 @@ plane_ids = [1 2 3 4;
     2 3 7 6
     ];
 
-
-
 c1_id = ic_map(img_id);
-%c2_id = ic_map(2)
 
 iv_id = find(ik==c1_id);
 ev_id = find(ek==c1_id);
@@ -27,38 +19,34 @@ ev_id = find(ek==c1_id);
 A = [iv(:,:,iv_id) zeros(3,1)];
 R_t = [ev(:,:,ev_id); [0 0 0 1]];
 
-% A = [iv(:,:,2) zeros(3,1)];
-% R_t = [ev(:,:,2); [0 0 0 1]];
+trans_box_tmp = zeros(length(translated_custom_box),1) + 1;
+translated_custom_box_new = [translated_custom_box trans_box_tmp];
 
-yoyo11 = translated_custom_box;
-yy = zeros(length(yoyo11),1) + 1;
-yoyo11_new = [yoyo11 yy];
+proj_pixel_cord = zeros(length(translated_custom_box),3);
 
-u = zeros(length(yoyo11),3);
-temp = (R_t*yoyo11_new');
-for i = 1:length(yoyo11)
-    u(i,:) =  A*R_t*yoyo11_new(i,:)';
-    u(i,1) =  u(i,1)/ u(i,3);
-    u(i,2) =  u(i,2)/ u(i,3);
+temp = (R_t*translated_custom_box_new')';
+[zz, zi] = get_z_ordering(plane_ids, temp);
+
+for i = 1:length(translated_custom_box)
+    proj_pixel_cord(i,:) =  A*R_t*translated_custom_box_new(i,:)';
+    proj_pixel_cord(i,1) =  proj_pixel_cord(i,1)/ proj_pixel_cord(i,3);
+    proj_pixel_cord(i,2) =  proj_pixel_cord(i,2)/ proj_pixel_cord(i,3);
 end
+proj_pixel_cord = proj_pixel_cord(:,1:2);
 
-tt = imread(strcat('C:\Users\arunt\Documents\cv\sfm\table\',int2str(c1_id),'table.jpeg'));
+tt = imread(strcat('C:\Users\Vijay Vamsi\Desktop\cv_project\augmented-reality\',int2str(c1_id),'table.jpeg'));
 
-
-u = u(:,1:2);
 figure(1)
 imshow(tt)
 hold on
-% sz = 4;
-% scatter(u(:,1),u(:,2),sz,'d');
-%plot(u(:,1), u(:,2), 'ro', 'MarkerSize', 3);
 
-plot_rect_plane_2d(u(1,:),u(2,:),u(3,:),u(4,:),'y')
-plot_rect_plane_2d(u(5,:),u(6,:),u(7,:),u(8,:),'m')
-plot_rect_plane_2d(u(1,:),u(2,:),u(6,:),u(5,:),'c')
-plot_rect_plane_2d(u(4,:),u(1,:),u(5,:),u(8,:),'b')
-plot_rect_plane_2d(u(3,:),u(4,:),u(8,:),u(7,:),'g')
-plot_rect_plane_2d(u(2,:),u(3,:),u(7,:),u(6,:),'r')
+colors = ['y' 'm' 'c' 'b' 'g' 'r'];
+plot_rect_plane_2d(proj_pixel_cord(zz(6,1),:),proj_pixel_cord(zz(6,2),:),proj_pixel_cord(zz(6,3),:),proj_pixel_cord(zz(6,4),:),colors(zi(6)))
+plot_rect_plane_2d(proj_pixel_cord(zz(5,1),:),proj_pixel_cord(zz(5,2),:),proj_pixel_cord(zz(5,3),:),proj_pixel_cord(zz(5,4),:),colors(zi(5)))
+plot_rect_plane_2d(proj_pixel_cord(zz(4,1),:),proj_pixel_cord(zz(4,2),:),proj_pixel_cord(zz(4,3),:),proj_pixel_cord(zz(4,4),:),colors(zi(4)))
+plot_rect_plane_2d(proj_pixel_cord(zz(3,1),:),proj_pixel_cord(zz(3,2),:),proj_pixel_cord(zz(3,3),:),proj_pixel_cord(zz(3,4),:),colors(zi(3)))
+plot_rect_plane_2d(proj_pixel_cord(zz(2,1),:),proj_pixel_cord(zz(2,2),:),proj_pixel_cord(zz(2,3),:),proj_pixel_cord(zz(2,4),:),colors(zi(2)))
+plot_rect_plane_2d(proj_pixel_cord(zz(1,1),:),proj_pixel_cord(zz(1,2),:),proj_pixel_cord(zz(1,3),:),proj_pixel_cord(zz(1,4),:),colors(zi(1)))
 
 saveas(1,'finename1.jpg')
 end

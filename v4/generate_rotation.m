@@ -1,4 +1,4 @@
-function rot_mat = rotmat(u, v, w)
+function rot_mat = generate_rotation(u, v, w)
 
     u1 = v/sqrt(u^2 + v^2 + w^2);
     u2 = -u/sqrt(u^2 + v^2 + w^2);
