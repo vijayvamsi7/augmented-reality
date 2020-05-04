@@ -1,4 +1,4 @@
-function [best_inliers,best_nor_vec,best_ro,best_error]= ransac_cus(points,no,iterations,theshold,d)
+function [best_inliers,best_nor_vec,best_ro,best_error,X_best,Y_best,Z_best]= ransac_cus(points,no,iterations,theshold,d)
 
 %Initialize variables
 iter=0;
@@ -9,22 +9,22 @@ while iter < iterations
     %n as 3.
     perm=randperm(length(points));
     sample_in=perm(1:no);
-    p_in=p(sample_in,:);
+    p_in=points(sample_in,:);
     remaining_data=perm(no+1:end);
-    p_out=p(sample_out,:);
+    p_out=points(remaining_data,:);
 
     new_inlier = p_in;
     %Fitting these 3 points to form a plane using least square error
-    [n_est_in ro_est_in]=least_square_error(p_in);
+    [n_est_in, ro_est_in,X,Y,Z]=least_square_error(p_in);
 
     %For each data point oustide the sample
     for i=remaining_data
         %calculatying the distance
-        dist=dot(n_est_in,p(i,:))-ro_est_in;
+        dist=dot(n_est_in,points(i,:))-ro_est_in;
         %comparing the distance to threhold.
         if abs(dist)<theshold
             %finding all the points within that plane.
-            [inlier_new_est, ro_est_new]=least_square_error(new_inlier);
+            [inlier_new_est,ro_est_new,X,Y,Z]=least_square_error(new_inlier);
             for iii=1:length(new_inlier)
                 dist(iii)=dot(inlier_new_est,new_inlier(iii,:))-ro_est_new;
             end
@@ -42,6 +42,9 @@ while iter < iterations
                 best_nor_vec=inlier_new_est;
                 best_ro=ro_est_new;
                 best_error=error(iter+1);
+                X_best=X;
+                Y_best=Y;
+                Z_best=Z;
             end
         end
 
