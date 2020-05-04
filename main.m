@@ -12,9 +12,9 @@ translated_custom_box = translation(custom_box, rot_mat, ro_best, n_best(3));
 % Plot the box on the axis
 plot_3d_polygon(X_best, Y_best, Z_best, translated_custom_box);
 
-% for i = 1:5
-%     subplot(1,5,i),plot_and_project(i,translated_custom_box);
-%     hold on;
-% end
+for i = 1:5
+    subplot(1,5,i),plot_and_project(i,translated_custom_box);
+    hold on;
+end
 
 
